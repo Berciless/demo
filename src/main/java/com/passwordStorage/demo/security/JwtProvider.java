@@ -3,8 +3,6 @@ package com.passwordStorage.demo.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -21,45 +19,45 @@ public class JwtProvider {
     private KeyStore keyStore;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         try {
-            keyStore= KeyStore.getInstance("JKS");
+            keyStore = KeyStore.getInstance("JKS");
             InputStream resourceAsStream = getClass().getResourceAsStream("/keystore");
             keyStore.load(resourceAsStream, "password".toCharArray());
-        }catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e){
+        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
             throw new RuntimeException("KeyStore loading exception");
         }
     }
 
-    public String  generateToken(String username){
+    public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .signWith(getPrivateKey())
                 .compact();
     }
 
-    private PrivateKey getPrivateKey(){
-        try{
-            return (PrivateKey) keyStore.getKey("alias","password".toCharArray());
-        }catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e){
+    private PrivateKey getPrivateKey() {
+        try {
+            return (PrivateKey) keyStore.getKey("alias", "password".toCharArray());
+        } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
             throw new RuntimeException("PrivateKey retrieving exception");
         }
     }
 
-    public boolean validateToken(String jwt){
+    public boolean validateToken(String jwt) {
         parser().setSigningKey(getPublicKey()).parseClaimsJws(jwt);
         return true;
     }
 
-    private PublicKey getPublicKey(){
-        try{
+    private PublicKey getPublicKey() {
+        try {
             return keyStore.getCertificate("alias").getPublicKey();
-        }catch (KeyStoreException e){
+        } catch (KeyStoreException e) {
             throw new RuntimeException("PublicKey retrieving exception");
         }
     }
 
-    public String getUsernameFromJwt(String token){
+    public String getUsernameFromJwt(String token) {
         Claims claims = parser()
                 .setSigningKey(getPublicKey())
                 .parseClaimsJws(token)

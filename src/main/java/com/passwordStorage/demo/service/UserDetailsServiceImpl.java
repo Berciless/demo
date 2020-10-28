@@ -21,12 +21,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    @Transactional(readOnly= true)
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findById(username).orElseThrow(()->new UsernameNotFoundException("Numele de utilizator introdus nu exista"));
+        User user = userRepository.findById(username).orElseThrow(() -> new UsernameNotFoundException("Numele de utilizator introdus nu exista"));
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(),
-                true,true,true,true,
+                true, true, true, true,
                 Collections.singletonList(new SimpleGrantedAuthority("USER")));
     }
 
