@@ -21,15 +21,21 @@ public class AuthController {
     private final AuthService authService;
     private final UserRepository userRepository;
 
-    @PostMapping("/auth/simpleSignUp")
-    public ResponseEntity<String> simpleSignUp(@RequestBody AuthRequest authRequest){
+    @PostMapping("/auth/hashAndPepperSignUp")
+    public ResponseEntity<String> hashAndPepperSignUp(@RequestBody AuthRequest authRequest){
         if(userRepository.findById(authRequest.getUsername()).isPresent()){
             return new ResponseEntity<>("User Allready Exists", HttpStatus.BAD_REQUEST);
         }
-        authService.simpleSignUp(authRequest);
+        authService.hashAndPepperSignUp(authRequest);
         return new ResponseEntity<>("Simple User Created !", HttpStatus.OK);
-
     }
+
+    @PostMapping("/auth/hashAndPepperLogIn")
+    public AuthResponse hashAndPepperLogIn(@RequestBody AuthRequest authRequest){
+        return authService.hashAndPepperLogIn(authRequest);
+    }
+
+
 
     @PostMapping("/auth/hashSignUp")
     public ResponseEntity<String> hashSignUp(@RequestBody AuthRequest authRequest){
@@ -38,7 +44,6 @@ public class AuthController {
         }
         authService.hashSignUp(authRequest);
         return new ResponseEntity<>("Hash User Created !", HttpStatus.OK);
-
     }
 
     @PostMapping("/auth/hashLogIn")
@@ -46,10 +51,7 @@ public class AuthController {
         return authService.hashLogIn(authRequest);
     }
 
-    @PostMapping("/auth/simpleLogIn")
-        public AuthResponse simpleLogIn(@RequestBody AuthRequest authRequest){
-        return authService.simpleLogIn(authRequest);
-    }
+
 
     @GetMapping("/auth/data")
     public ResponseEntity<List<UserDto>> readData(){
