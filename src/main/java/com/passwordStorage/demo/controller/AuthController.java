@@ -7,6 +7,7 @@ import com.passwordStorage.demo.dto.UserDto;
 import com.passwordStorage.demo.repository.UserRepository;
 import com.passwordStorage.demo.service.AuthService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,17 +39,17 @@ public class AuthController {
 
 
     @PostMapping("/auth/hashSignUp")
-    public ResponseEntity<String> hashSignUp(@RequestBody AuthRequest authRequest){
+    public HttpEntity<?> hashSignUp(@RequestBody AuthRequest authRequest){
         if(userRepository.findById(authRequest.getUsername()).isPresent()){
             return new ResponseEntity<>("User Allready Exists", HttpStatus.BAD_REQUEST);
         }
         authService.hashSignUp(authRequest);
-        return new ResponseEntity<>("Hash User Created !", HttpStatus.OK);
+        return new ResponseEntity<>(authRequest,HttpStatus.OK);
     }
 
     @PostMapping("/auth/hashLogIn")
-    public AuthResponse hashLogIn(@RequestBody AuthRequest authRequest){
-        return authService.hashLogIn(authRequest);
+    public ResponseEntity<AuthResponse> hashLogIn(@RequestBody AuthRequest authRequest){
+        return new ResponseEntity<>(authService.hashLogIn(authRequest), HttpStatus.OK);
     }
 
 
