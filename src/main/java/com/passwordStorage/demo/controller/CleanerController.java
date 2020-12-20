@@ -1,7 +1,8 @@
 package com.passwordStorage.demo.controller;
 
-
 import com.passwordStorage.demo.service.CleaningService;
+import org.ghost4j.converter.ConverterException;
+import org.ghost4j.document.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +15,11 @@ import java.io.IOException;
 @RequestMapping("/api")
 public class CleanerController {
 
-    @Autowired
     CleaningService cleaningService;
 
-    FileModel inMemoryFile;
-
+    public CleanerController(CleaningService cleaningService){
+        this.cleaningService=cleaningService;
+    }
 
     @GetMapping("/test")
     public ResponseEntity<String> test(){
@@ -27,16 +28,8 @@ public class CleanerController {
 
     @PostMapping("/upload")
     public FileModel unload(@RequestParam("file") MultipartFile file) throws IOException {
-        inMemoryFile = new FileModel(file.getOriginalFilename(),file.getContentType(),cleaningService.clean(file));
         return new FileModel(file.getOriginalFilename(),file.getContentType(),cleaningService.clean(file));
     }
-
-    @GetMapping(path = { "/get" })
-    public FileModel get() throws IOException {
-        return inMemoryFile;
-    }
-
-
 
 
 

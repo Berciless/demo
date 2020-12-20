@@ -14,6 +14,25 @@
 	<name>demo</name>
 	<description>Demo project for password storage</description>
 
+	<repositories>
+		<repository>
+			<id>org.ghost4j.repository.releases</id>
+			<name>Ghost4J releases</name>
+			<url>http://repo.ghost4j.org/maven2/releases</url>
+		</repository>
+		<repository>
+			<id>org.ghost4j.repository.snapshots</id>
+			<name>Ghost4J snapshots</name>
+			<url>http://repo.ghost4j.org/maven2/snapshots</url>
+		</repository>
+
+		<repository>
+			<id>AsposeJavaAPI</id>
+			<name>Aspose Java API</name>
+			<url>https://repository.aspose.com/repo/</url>
+		</repository>
+	</repositories>
+
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -82,17 +101,23 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.pdfbox</groupId>
-			<artifactId>pdfbox</artifactId>
-			<version>2.0.21</version>
+			<groupId>com.aspose</groupId>
+			<artifactId>aspose-words</artifactId>
+			<version>19.6</version>
+			<classifier>jdk17</classifier>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
+			<groupId>com.aspose</groupId>
+			<artifactId>aspose-words</artifactId>
+			<version>19.6</version>
+			<classifier>javadoc</classifier>
 		</dependency>
 
+		<dependency>
+			<groupId>org.ghost4j</groupId>
+			<artifactId>ghost4j</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>commons-io</groupId>
